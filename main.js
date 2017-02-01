@@ -86,6 +86,10 @@ jQuery(function($) {
     var mobileMenuAnimationComplete = true;
     $('.js__main-navigation__toggle-btn').on('click', function(e) {
         e.preventDefault();
+
+        // close language menu if open
+        $('.header-top__language-navigation.toggle-language-menu .language-navigation__items-wrp').hide();
+
         if (mobileMenuAnimationComplete) {
             mobileMenuAnimationComplete = false;
             $html.toggleClass('mobile-menu-opened');
@@ -97,6 +101,30 @@ jQuery(function($) {
 
     // detect if we cross 992px window width.
     window.matchMedia('(min-width: 992px)').addListener(cleanup);
+
+    // disable active language in language menu (full width)
+    $('.js__header-top__language-navigation.fixed a.active').on('click', function(e) {
+        e.preventDefault();
+    });
+
+    // toggle language menu (dropdown)
+    $('.js__language-navigation__toggle-btn').on('click', function(e) {
+        e.preventDefault();
+        $('.js__language-navigation__items-wrp').not(':animated').slideToggle(300);
+    });
+
+    var cleanupLanguageMenu = function() {
+        if (window.matchMedia('(min-width: 450px)').matches) {
+            $('.js__header-top__language-navigation.fixed').removeClass('toggle-language-menu');
+            $('.js__header-top__language-navigation.fixed .js__language-navigation__items-wrp').show();
+        } else {
+            $('.js__header-top__language-navigation.fixed').addClass('toggle-language-menu');
+            $('.js__header-top__language-navigation.fixed .js__language-navigation__items-wrp').hide();
+        }
+    };
+
+    // detect if we cross 450px window width.
+    window.matchMedia('(min-width: 450px)').addListener(cleanupLanguageMenu);
 });
 
 // ====== class fo fixed main navigation bar   =======
