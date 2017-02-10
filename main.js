@@ -16,6 +16,9 @@ jQuery(function($) {
     var $thirdNavLevel = $('.third-navigation-level');
     var $openThirdMenuLink = $('.js__main-navigation__open-third-menu-link');
     var $dropdownMenuWithColumns = $('.js__dropdown-menu-with-columns .js__main-navigation__item._sub');
+    var $menuAnimationSpeed = 300;
+    var $minScreenWidth = '992px';
+    var $smallScreenWidth = '450px';
 
     if (!touchSupport) {
         $dropdownMenuWithColumns.hover(function() {
@@ -26,7 +29,7 @@ jQuery(function($) {
     // Set class for third-navigation-level to handle position on left or right
     var setThirdMenuPosition = function() {
         if ($thirdNavLevel.length) {
-            if (window.matchMedia('(min-width: 992px)').matches) {
+            if (window.matchMedia('(min-width: ' + $minScreenWidth + ')').matches) {
                 $secondNavLevel.each(function() {
                     var offsetRight = $(window).width() - $(this).offset().left - $(this).outerWidth();
                     var secondNavLevelWidth = $(this).width();
@@ -49,7 +52,7 @@ jQuery(function($) {
         $mainNavigation.find('.js__main-navigation__items-list').find('li').removeClass('_open-mobile-dropdown _open-tablet-dropdown');
         $html.removeClass('mobile-menu-opened');
 
-        if (window.matchMedia('(min-width: 992px)').matches) {
+        if (window.matchMedia('(min-width: ' + $minScreenWidth + ')').matches) {
             $('.js__navigation__items-wrp').show();
         } else {
             $('.js__navigation__items-wrp').hide();
@@ -64,7 +67,7 @@ jQuery(function($) {
     // Add click event to dropdown link on mobile devices.
     $openSubMenuLink.on('click', function(e) {
         e.preventDefault();
-        if (window.matchMedia('(min-width: 992px)').matches) {
+        if (window.matchMedia('(min-width: ' + $minScreenWidth + ')').matches) {
             $mainNavigationItemsList.not($(this).parents()).removeClass('_open-tablet-dropdown');
             $(this).parents('.main-navigation__item').toggleClass('_open-tablet-dropdown');
         } else {
@@ -75,7 +78,7 @@ jQuery(function($) {
     // Add click event to second menu dropdown link on mobile devices.
     $openThirdMenuLink.on('click', function(e) {
         e.preventDefault();
-        if (window.matchMedia('(min-width: 992px)').matches) {
+        if (window.matchMedia('(min-width: ' + $minScreenWidth + ')').matches) {
             $('.main-navigation__sub-item').not($(this).parents('.main-navigation__sub-item')).removeClass('_open-tablet-dropdown');
             $(this).parents('.main-navigation__sub-item').toggleClass('_open-tablet-dropdown');
         } else {
@@ -94,13 +97,13 @@ jQuery(function($) {
             mobileMenuAnimationComplete = false;
             $html.toggleClass('mobile-menu-opened');
         }
-        $('.js__navigation__items-wrp').not(':animated').slideToggle(300, function() {
+        $('.js__navigation__items-wrp').not(':animated').slideToggle($menuAnimationSpeed, function() {
             mobileMenuAnimationComplete = true;
         });
     });
 
-    // detect if we cross 992px window width.
-    window.matchMedia('(min-width: 992px)').addListener(cleanup);
+    // detect if we cross the minimum window width.
+    window.matchMedia('(min-width: ' + $minScreenWidth + ')').addListener(cleanup);
 
     // disable active language in language menu (full width)
     $('.js__header-top__language-navigation.fixed a.active').on('click', function(e) {
@@ -110,11 +113,11 @@ jQuery(function($) {
     // toggle language menu (dropdown)
     $('.js__language-navigation__toggle-btn').on('click', function(e) {
         e.preventDefault();
-        $('.js__language-navigation__items-wrp').not(':animated').slideToggle(300);
+        $('.js__language-navigation__items-wrp').not(':animated').slideToggle($menuAnimationSpeed);
     });
 
     var cleanupLanguageMenu = function() {
-        if (window.matchMedia('(min-width: 450px)').matches) {
+        if (window.matchMedia('(min-width: ' + $smallScreenWidth + ')').matches) {
             $('.js__header-top__language-navigation.fixed').removeClass('toggle-language-menu');
             $('.js__header-top__language-navigation.fixed .js__language-navigation__items-wrp').show();
         } else {
@@ -123,8 +126,8 @@ jQuery(function($) {
         }
     };
 
-    // detect if we cross 450px window width.
-    window.matchMedia('(min-width: 450px)').addListener(cleanupLanguageMenu);
+    // detect if we cross the small screen width.
+    window.matchMedia('(min-width: ' + $smallScreenWidth + ')').addListener(cleanupLanguageMenu);
 });
 
 // ====== class fo fixed main navigation bar   =======
